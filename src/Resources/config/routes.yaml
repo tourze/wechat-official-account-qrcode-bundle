@@ -1,0 +1,3 @@
+wechat_official_account_qrcode_controllers:
+  resource: '../../Controller/'
+  type: attribute

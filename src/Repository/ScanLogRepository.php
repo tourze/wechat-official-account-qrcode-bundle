@@ -4,7 +4,6 @@ namespace WechatOfficialAccountQrcodeBundle\Repository;
 
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
-use DoctrineEnhanceBundle\Repository\CommonRepositoryAware;
 use WechatOfficialAccountQrcodeBundle\Entity\ScanLog;
 
 /**
@@ -15,8 +14,6 @@ use WechatOfficialAccountQrcodeBundle\Entity\ScanLog;
  */
 class ScanLogRepository extends ServiceEntityRepository
 {
-    use CommonRepositoryAware;
-
     public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, ScanLog::class);

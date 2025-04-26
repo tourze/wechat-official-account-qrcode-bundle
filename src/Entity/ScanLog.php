@@ -4,7 +4,6 @@ namespace WechatOfficialAccountQrcodeBundle\Entity;
 
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
-use DoctrineEnhanceBundle\Traits\PrimaryKeyAware;
 use Symfony\Component\Serializer\Attribute\Groups;
 use Tourze\DoctrineIndexedBundle\Attribute\IndexColumn;
 use Tourze\DoctrineTimestampBundle\Attribute\CreateTimeColumn;
@@ -17,7 +16,17 @@ use WechatOfficialAccountQrcodeBundle\Repository\ScanLogRepository;
 #[ORM\Table(name: 'ims_wechat_qrcode_scan_log', options: ['comment' => 'Ticket扫描记录'])]
 class ScanLog
 {
-    use PrimaryKeyAware;
+    #[ListColumn(order: -1)]
+    #[ExportColumn]
+    #[ORM\Id]
+    #[ORM\GeneratedValue]
+    #[ORM\Column(type: Types::INTEGER, options: ['comment' => 'ID'])]
+    private ?int $id = 0;
+
+    public function getId(): ?int
+    {
+        return $this->id;
+    }
 
     #[IndexColumn]
     #[ListColumn(order: 98, sorter: true)]

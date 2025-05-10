@@ -16,6 +16,7 @@
     "symfony/event-dispatcher": "^6.4",
     "symfony/framework-bundle": "^6.4",
     "symfony/http-kernel": "^6.4",
+    "symfony/serializer": "^6.4",
     "symfony/yaml": "^6.4 || ^7.1",
     "tourze/bundle-dependency": "0.0.*",
     "tourze/doctrine-async-bundle": "^0.0.6",

@@ -4,9 +4,9 @@ namespace WechatOfficialAccountQrcodeBundle\EventSubscriber;
 
 use Symfony\Component\EventDispatcher\Attribute\AsEventListener;
 use Tourze\DoctrineAsyncBundle\Service\DoctrineService;
-use WechatOfficialAccountBundle\Event\WechatOfficialAccountServerMessageRequestEvent;
 use WechatOfficialAccountQrcodeBundle\Entity\ScanLog;
 use WechatOfficialAccountQrcodeBundle\Repository\QrcodeTicketRepository;
+use WechatOfficialAccountServerMessageBundle\Event\WechatOfficialAccountServerMessageRequestEvent;
 use Yiisoft\Arrays\ArrayHelper;
 
 class TicketMessageSubscriber

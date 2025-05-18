@@ -14,11 +14,11 @@ class QrcodeJumpPublishRequest extends WithAccountRequest
     /**
      * @var string 二维码规则，填服务号的带参二维码url ，必须是http://weixin.qq.com/q/开头的url，例如http://weixin.qq.com/q/02P5KzM_xxxxx
      */
-    private string $prefix;
+    private ?string $prefix = null;
 
     public function getRequestPath(): string
     {
-        return 'https://api.weixin.qq.com/cgi-bin/wxopen/qrcodejumpadd';
+        return 'https://api.weixin.qq.com/cgi-bin/wxopen/qrcodejumppublish';
     }
 
     public function getRequestOptions(): ?array
@@ -32,7 +32,7 @@ class QrcodeJumpPublishRequest extends WithAccountRequest
         ];
     }
 
-    public function getPrefix(): string
+    public function getPrefix(): ?string
     {
         return $this->prefix;
     }

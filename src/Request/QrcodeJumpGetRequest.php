@@ -15,12 +15,12 @@ class QrcodeJumpGetRequest extends WithAccountRequest
     /**
      * @var string 这里填要扫了服务号二维码之后要跳转的小程序的appid
      */
-    private string $appid;
+    private ?string $appid = null;
 
     /**
      * @var int 1：prefix查询；2：分页查询，按新增顺序返回
      */
-    private int $type;
+    private ?int $type = null;
 
     /**
      * @var ?array prefix查询，get_type=1 必传，最多传 200 个前缀
@@ -44,20 +44,29 @@ class QrcodeJumpGetRequest extends WithAccountRequest
 
     public function getRequestOptions(): ?array
     {
+        if ($this->getType() === null) {
+            throw new ApiException('缺少type入参');
+        }
+        
+        if ($this->getAppid() === null) {
+            throw new ApiException('缺少appid入参');
+        }
+        
         $json = [
             'get_type' => $this->getType(),
             'appid' => $this->getAppid(),
         ];
+        
         if (1 === $this->getType()) {
             if (!$this->getPrefixList()) {
                 throw new ApiException('缺少prefixList入参');
             }
             $json['prefixList'] = $this->getPrefixList();
         } elseif (2 === $this->getType()) {
-            if (null === !$this->getPageNum()) {
+            if (null === $this->getPageNum()) {
                 throw new ApiException('缺少pageNum入参');
             }
-            if (null === !$this->getPageSize()) {
+            if (null === $this->getPageSize()) {
                 throw new ApiException('缺少pageSize入参');
             }
             $json['pageNum'] = $this->getPageNum();
@@ -71,7 +80,7 @@ class QrcodeJumpGetRequest extends WithAccountRequest
         ];
     }
 
-    public function getAppid(): string
+    public function getAppid(): ?string
     {
         return $this->appid;
     }
@@ -81,7 +90,7 @@ class QrcodeJumpGetRequest extends WithAccountRequest
         $this->appid = $appid;
     }
 
-    public function getType(): int
+    public function getType(): ?int
     {
         return $this->type;
     }

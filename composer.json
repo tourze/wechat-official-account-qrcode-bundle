@@ -29,6 +29,7 @@
     "tourze/enum-extra": "~0.0.5",
     "tourze/json-rpc-core": "^0.0.6",
     "tourze/wechat-official-account-bundle": "0.1.*",
+    "tourze/wechat-official-account-server-message-bundle": "0.0.*",
     "yiisoft/arrays": "^3"
   },
   "require-dev": {

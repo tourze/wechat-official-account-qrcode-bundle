@@ -3,7 +3,7 @@
 namespace WechatOfficialAccountQrcodeBundle\Tests\EventSubscriber;
 
 use PHPUnit\Framework\TestCase;
-use Tourze\DoctrineAsyncInsertBundle\Service\AsyncInsertService;
+use Tourze\DoctrineAsyncInsertBundle\Service\AsyncInsertService as DoctrineService;
 use Tourze\WechatOfficialAccountContracts\UserInterface;
 use WechatOfficialAccountQrcodeBundle\Entity\QrcodeTicket;
 use WechatOfficialAccountQrcodeBundle\Entity\ScanLog;
@@ -15,13 +15,13 @@ use WechatOfficialAccountServerMessageBundle\Event\WechatOfficialAccountServerMe
 class TicketMessageSubscriberTest extends TestCase
 {
     private QrcodeTicketRepository $ticketRepository;
-    private AsyncInsertService $doctrineService;
+    private DoctrineService $doctrineService;
     private TicketMessageSubscriber $subscriber;
 
     protected function setUp(): void
     {
         $this->ticketRepository = $this->createMock(QrcodeTicketRepository::class);
-        $this->doctrineService = $this->createMock(AsyncInsertService::class);
+        $this->doctrineService = $this->createMock(DoctrineService::class);
         $this->subscriber = new TicketMessageSubscriber(
             $this->ticketRepository,
             $this->doctrineService

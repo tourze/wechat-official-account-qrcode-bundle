@@ -3,7 +3,7 @@
 namespace WechatOfficialAccountQrcodeBundle\EventSubscriber;
 
 use Symfony\Component\EventDispatcher\Attribute\AsEventListener;
-use Tourze\DoctrineAsyncBundle\Service\DoctrineService;
+use Tourze\DoctrineAsyncInsertBundle\Service\AsyncInsertService;
 use WechatOfficialAccountQrcodeBundle\Entity\ScanLog;
 use WechatOfficialAccountQrcodeBundle\Repository\QrcodeTicketRepository;
 use WechatOfficialAccountServerMessageBundle\Event\WechatOfficialAccountServerMessageRequestEvent;
@@ -13,7 +13,7 @@ class TicketMessageSubscriber
 {
     public function __construct(
         private readonly QrcodeTicketRepository $ticketRepository,
-        private readonly DoctrineService $doctrineService,
+        private readonly AsyncInsertService $doctrineService,
     ) {
     }
 

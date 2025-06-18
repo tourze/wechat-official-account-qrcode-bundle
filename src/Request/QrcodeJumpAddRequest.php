@@ -11,24 +11,12 @@ use WechatOfficialAccountBundle\Request\WithAccountRequest;
  */
 class QrcodeJumpAddRequest extends WithAccountRequest
 {
-    /**
-     * @var string 二维码规则，填服务号的带参二维码url ，必须是http://weixin.qq.com/q/开头的url，例如http://weixin.qq.com/q/02P5KzM_xxxxx
-     */
     private ?string $prefix = null;
 
-    /**
-     * @var string 这里填要扫了服务号二维码之后要跳转的小程序的appid
-     */
     private ?string $appid = null;
 
-    /**
-     * @var string 小程序功能页面
-     */
     private ?string $path = null;
 
-    /**
-     * @var int 编辑标志位，0 表示新增二维码规则，1 表示修改已有二维码规则（注意，已经发布的规则，不支持修改）
-     */
     private ?int $isEdit = null;
 
     public function getRequestPath(): string

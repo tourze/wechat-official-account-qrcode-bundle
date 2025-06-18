@@ -4,19 +4,16 @@ namespace WechatOfficialAccountQrcodeBundle\Entity;
 
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
-use Tourze\DoctrineIndexedBundle\Attribute\IndexColumn;
-use Tourze\DoctrineTimestampBundle\Attribute\CreateTimeColumn;
-use Tourze\EasyAdmin\Attribute\Column\ExportColumn;
-use Tourze\EasyAdmin\Attribute\Column\ListColumn;
+use Tourze\DoctrineTimestampBundle\Traits\CreateTimeAware;
 use Tourze\WechatOfficialAccountContracts\UserInterface;
 use WechatOfficialAccountQrcodeBundle\Repository\ScanLogRepository;
 
 #[ORM\Entity(repositoryClass: ScanLogRepository::class, readOnly: true)]
 #[ORM\Table(name: 'ims_wechat_qrcode_scan_log', options: ['comment' => 'Ticket扫描记录'])]
-class ScanLog
+class ScanLog implements \Stringable
 {
-    #[ListColumn(order: -1)]
-    #[ExportColumn]
+    use CreateTimeAware;
+    
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column(type: Types::INTEGER, options: ['comment' => 'ID'])]
@@ -31,13 +28,6 @@ class ScanLog
 
     #[ORM\ManyToOne]
     private ?UserInterface $user = null;
-
-    #[IndexColumn]
-    #[ListColumn(order: 98, sorter: true)]
-    #[ExportColumn]
-    #[CreateTimeColumn]
-    #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true, options: ['comment' => '创建时间'])]
-    private ?\DateTimeInterface $createTime = null;
 
     public function getId(): ?int
     {
@@ -80,15 +70,8 @@ class ScanLog
         return $this;
     }
 
-    public function setCreateTime(?\DateTimeInterface $createdAt): self
+    public function __toString(): string
     {
-        $this->createTime = $createdAt;
-
-        return $this;
-    }
-
-    public function getCreateTime(): ?\DateTimeInterface
-    {
-        return $this->createTime;
+        return sprintf('扫描记录 #%s', $this->id ?? 'new');
     }
 }

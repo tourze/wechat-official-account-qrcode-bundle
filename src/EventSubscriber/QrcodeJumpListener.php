@@ -28,7 +28,7 @@ class QrcodeJumpListener
     public function prePersist(QrcodeJump $obj): void
     {
         // 保存前需要先请求微信接口
-        if (!$obj->getPrefix()) {
+        if ('' === $obj->getPrefix()) {
             throw new ApiException('prefix不能为空');
         }
         $request = new QrcodeJumpAddRequest();

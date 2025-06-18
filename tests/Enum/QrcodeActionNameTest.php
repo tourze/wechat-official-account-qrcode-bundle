@@ -29,8 +29,6 @@ class QrcodeActionNameTest extends TestCase
         foreach (QrcodeActionName::cases() as $case) {
             $options[$case->value] = $case->getLabel();
         }
-        
-        $this->assertIsArray($options);
         $this->assertCount(4, $options);
         
         $this->assertArrayHasKey('QR_SCENE', $options);
@@ -49,7 +47,6 @@ class QrcodeActionNameTest extends TestCase
     public function testItemTrait(): void
     {
         $items = QrcodeActionName::cases();
-        $this->assertIsArray($items);
         $this->assertCount(4, $items);
         
         $this->assertContains(QrcodeActionName::QR_SCENE, $items);

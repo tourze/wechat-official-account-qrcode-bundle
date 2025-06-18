@@ -29,7 +29,7 @@ class TicketMessageSubscriber
         $ticket = $this->ticketRepository->findOneBy([
             'ticket' => $ticket,
         ]);
-        if (!$ticket) {
+        if (null === $ticket) {
             return;
         }
 

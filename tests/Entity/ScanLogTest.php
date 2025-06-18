@@ -27,7 +27,7 @@ class ScanLogTest extends TestCase
         $qrcodeTicket = new QrcodeTicket();
         $this->scanLog->setQrcode($qrcodeTicket);
         $this->assertSame($qrcodeTicket, $this->scanLog->getQrcode());
-        
+
         $qrcodeTicket2 = new QrcodeTicket();
         $this->scanLog->setQrcode($qrcodeTicket2);
         $this->assertSame($qrcodeTicket2, $this->scanLog->getQrcode());
@@ -39,7 +39,7 @@ class ScanLogTest extends TestCase
         $openId = 'o6_bmjrPTlm6_2sgVt7hMZOPfL2M';
         $this->scanLog->setOpenId($openId);
         $this->assertEquals($openId, $this->scanLog->getOpenId());
-        
+
         $newOpenId = 'o6_bmjrPTlm6_2sgVt7hMZOPfL3M';
         $this->scanLog->setOpenId($newOpenId);
         $this->assertEquals($newOpenId, $this->scanLog->getOpenId());
@@ -51,27 +51,27 @@ class ScanLogTest extends TestCase
         $user = $this->createMock(UserInterface::class);
         $this->scanLog->setUser($user);
         $this->assertSame($user, $this->scanLog->getUser());
-        
+
         $user2 = $this->createMock(UserInterface::class);
         $this->scanLog->setUser($user2);
         $this->assertSame($user2, $this->scanLog->getUser());
         $this->assertNotSame($user, $this->scanLog->getUser());
-        
+
         $this->scanLog->setUser(null);
         $this->assertNull($this->scanLog->getUser());
     }
 
     public function testCreateTime(): void
     {
-        $date = new \DateTime();
+        $date = new \DateTimeImmutable();
         $this->scanLog->setCreateTime($date);
         $this->assertSame($date, $this->scanLog->getCreateTime());
-        
-        $date2 = new \DateTime('+1 day');
+
+        $date2 = new \DateTimeImmutable('+1 day');
         $this->scanLog->setCreateTime($date2);
         $this->assertSame($date2, $this->scanLog->getCreateTime());
         $this->assertNotSame($date, $this->scanLog->getCreateTime());
-        
+
         $this->scanLog->setCreateTime(null);
         $this->assertNull($this->scanLog->getCreateTime());
     }
@@ -81,18 +81,18 @@ class ScanLogTest extends TestCase
         $qrcodeTicket = new QrcodeTicket();
         $openId = 'o6_bmjrPTlm6_2sgVt7hMZOPfL2M';
         $user = $this->createMock(UserInterface::class);
-        $date = new \DateTime();
-        
+        $date = new \DateTimeImmutable();
+
         $result = $this->scanLog
             ->setQrcode($qrcodeTicket)
             ->setOpenId($openId)
             ->setUser($user)
             ->setCreateTime($date);
-        
+
         $this->assertSame($this->scanLog, $result);
         $this->assertSame($qrcodeTicket, $this->scanLog->getQrcode());
         $this->assertEquals($openId, $this->scanLog->getOpenId());
         $this->assertSame($user, $this->scanLog->getUser());
         $this->assertSame($date, $this->scanLog->getCreateTime());
     }
-} 
+}

@@ -80,11 +80,11 @@ class QrcodeJumpTest extends TestCase
 
     public function testCreateTime(): void
     {
-        $date = new \DateTime();
+        $date = new \DateTimeImmutable();
         $this->qrcodeJump->setCreateTime($date);
         $this->assertSame($date, $this->qrcodeJump->getCreateTime());
         
-        $date2 = new \DateTime('+1 day');
+        $date2 = new \DateTimeImmutable('+1 day');
         $this->qrcodeJump->setCreateTime($date2);
         $this->assertSame($date2, $this->qrcodeJump->getCreateTime());
         $this->assertNotSame($date, $this->qrcodeJump->getCreateTime());
@@ -95,11 +95,11 @@ class QrcodeJumpTest extends TestCase
 
     public function testUpdateTime(): void
     {
-        $date = new \DateTime();
+        $date = new \DateTimeImmutable();
         $this->qrcodeJump->setUpdateTime($date);
         $this->assertSame($date, $this->qrcodeJump->getUpdateTime());
         
-        $date2 = new \DateTime('+1 day');
+        $date2 = new \DateTimeImmutable('+1 day');
         $this->qrcodeJump->setUpdateTime($date2);
         $this->assertSame($date2, $this->qrcodeJump->getUpdateTime());
         $this->assertNotSame($date, $this->qrcodeJump->getUpdateTime());

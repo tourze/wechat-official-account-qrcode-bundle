@@ -26,14 +26,14 @@ class QrcodeTicketTest extends TestCase
 
     public function testCreateTime(): void
     {
-        $date = new \DateTime();
+        $date = new \DateTimeImmutable();
         $this->qrcodeTicket->setCreateTime($date);
         $this->assertSame($date, $this->qrcodeTicket->getCreateTime());
     }
 
     public function testUpdateTime(): void
     {
-        $date = new \DateTime();
+        $date = new \DateTimeImmutable();
         $this->qrcodeTicket->setUpdateTime($date);
         $this->assertSame($date, $this->qrcodeTicket->getUpdateTime());
     }
@@ -61,7 +61,7 @@ class QrcodeTicketTest extends TestCase
 
     public function testExpireTime(): void
     {
-        $date = new \DateTime();
+        $date = new \DateTimeImmutable();
         $this->qrcodeTicket->setExpireTime($date);
         $this->assertSame($date, $this->qrcodeTicket->getExpireTime());
     }

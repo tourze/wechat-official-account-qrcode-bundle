@@ -12,29 +12,14 @@ use WechatOfficialAccountBundle\Request\WithAccountRequest;
  */
 class QrcodeJumpGetRequest extends WithAccountRequest
 {
-    /**
-     * @var string 这里填要扫了服务号二维码之后要跳转的小程序的appid
-     */
     private ?string $appid = null;
 
-    /**
-     * @var int 1：prefix查询；2：分页查询，按新增顺序返回
-     */
     private ?int $type = null;
 
-    /**
-     * @var ?array prefix查询，get_type=1 必传，最多传 200 个前缀
-     */
     private ?array $prefixList = null;
 
-    /**
-     * @var int|null 页码，get_type=2 必传，从 1 开始
-     */
     private ?int $pageNum = null;
 
-    /**
-     * @var int|null 每页数量，get_type=2 必传，最大为 200
-     */
     private ?int $pageSize = null;
 
     public function getRequestPath(): string
@@ -58,7 +43,7 @@ class QrcodeJumpGetRequest extends WithAccountRequest
         ];
         
         if (1 === $this->getType()) {
-            if (!$this->getPrefixList()) {
+            if (null === $this->getPrefixList()) {
                 throw new ApiException('缺少prefixList入参');
             }
             $json['prefixList'] = $this->getPrefixList();

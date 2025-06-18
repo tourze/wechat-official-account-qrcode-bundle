@@ -63,8 +63,6 @@ class CreateQrcodeRequestTest extends TestCase
         $this->request->setSceneStr('test_scene');
         
         $options = $this->request->getRequestOptions();
-        
-        $this->assertIsArray($options);
         $this->assertArrayHasKey('json', $options);
         $this->assertArrayHasKey('expire_seconds', $options['json']);
         $this->assertArrayHasKey('action_name', $options['json']);
@@ -81,8 +79,6 @@ class CreateQrcodeRequestTest extends TestCase
         $this->request->setSceneId(12345);
         
         $options = $this->request->getRequestOptions();
-        
-        $this->assertIsArray($options);
         $this->assertArrayHasKey('json', $options);
         $this->assertArrayHasKey('action_info', $options['json']);
         $this->assertArrayHasKey('scene', $options['json']['action_info']);
@@ -97,8 +93,6 @@ class CreateQrcodeRequestTest extends TestCase
         $this->request->setSceneStr('permanent_scene');
         
         $options = $this->request->getRequestOptions();
-        
-        $this->assertIsArray($options);
         $this->assertArrayHasKey('json', $options);
         $this->assertArrayHasKey('action_info', $options['json']);
         $this->assertArrayHasKey('scene', $options['json']['action_info']);
@@ -113,8 +107,6 @@ class CreateQrcodeRequestTest extends TestCase
         $this->request->setSceneId(1024);
         
         $options = $this->request->getRequestOptions();
-        
-        $this->assertIsArray($options);
         $this->assertArrayHasKey('json', $options);
         $this->assertArrayHasKey('action_info', $options['json']);
         $this->assertArrayHasKey('scene', $options['json']['action_info']);

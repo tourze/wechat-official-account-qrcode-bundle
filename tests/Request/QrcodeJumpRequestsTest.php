@@ -40,7 +40,6 @@ class QrcodeJumpRequestsTest extends TestCase
         
         // 测试请求选项
         $options = $request->getRequestOptions();
-        $this->assertIsArray($options);
         $this->assertArrayHasKey('json', $options);
         $this->assertArrayHasKey('prefix', $options['json']);
         $this->assertArrayHasKey('appid', $options['json']);
@@ -75,7 +74,6 @@ class QrcodeJumpRequestsTest extends TestCase
         
         // 测试请求选项
         $options = $request->getRequestOptions();
-        $this->assertIsArray($options);
         $this->assertArrayHasKey('json', $options);
         $this->assertArrayHasKey('prefix', $options['json']);
         $this->assertArrayHasKey('appid', $options['json']);
@@ -100,7 +98,6 @@ class QrcodeJumpRequestsTest extends TestCase
         
         // 测试请求选项
         $options = $request->getRequestOptions();
-        $this->assertIsArray($options);
         $this->assertArrayHasKey('json', $options);
         $this->assertArrayHasKey('prefix', $options['json']);
         $this->assertEquals($prefix, $options['json']['prefix']);

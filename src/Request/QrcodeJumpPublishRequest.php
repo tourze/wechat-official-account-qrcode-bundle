@@ -11,9 +11,6 @@ use WechatOfficialAccountBundle\Request\WithAccountRequest;
  */
 class QrcodeJumpPublishRequest extends WithAccountRequest
 {
-    /**
-     * @var string 二维码规则，填服务号的带参二维码url ，必须是http://weixin.qq.com/q/开头的url，例如http://weixin.qq.com/q/02P5KzM_xxxxx
-     */
     private ?string $prefix = null;
 
     public function getRequestPath(): string

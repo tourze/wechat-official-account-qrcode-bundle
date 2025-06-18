@@ -12,24 +12,12 @@ use WechatOfficialAccountQrcodeBundle\Enum\QrcodeActionName;
  */
 class CreateQrcodeRequest extends WithAccountRequest
 {
-    /**
-     * @var int 该二维码有效时间，以秒为单位
-     */
     private int $expireSeconds = 60;
 
-    /**
-     * @var QrcodeActionName 二维码类型
-     */
     private QrcodeActionName $actionName = QrcodeActionName::QR_STR_SCENE;
 
-    /**
-     * @var int|null 场景值ID，临时二维码时为32位非0整型，永久二维码时最大值为100000（目前参数只支持1--100000）
-     */
     private ?int $sceneId = null;
 
-    /**
-     * @var string|null 场景值ID（字符串形式的ID），字符串类型，长度限制为1到64
-     */
     private ?string $sceneStr = null;
 
     public function getRequestPath(): string

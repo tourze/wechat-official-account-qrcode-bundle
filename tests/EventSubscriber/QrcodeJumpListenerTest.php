@@ -77,7 +77,6 @@ class QrcodeJumpListenerTest extends TestCase
                     return ['errcode' => 0, 'errmsg' => 'ok'];
                 }
                 $this->fail('Unexpected request type: ' . get_class($request));
-                return null;
             });
         
         // 执行被测试的方法

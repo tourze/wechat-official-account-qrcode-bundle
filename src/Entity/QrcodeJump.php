@@ -4,7 +4,7 @@ namespace WechatOfficialAccountQrcodeBundle\Entity;
 
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
-use Tourze\DoctrineSnowflakeBundle\Service\SnowflakeIdGenerator;
+use Tourze\DoctrineSnowflakeBundle\Traits\SnowflakeKeyAware;
 use Tourze\DoctrineTimestampBundle\Traits\TimestampableAware;
 use WechatOfficialAccountQrcodeBundle\Repository\QrcodeJumpRepository;
 
@@ -12,11 +12,7 @@ use WechatOfficialAccountQrcodeBundle\Repository\QrcodeJumpRepository;
 #[ORM\Table(name: 'wechat_official_qrcode_jump', options: ['comment' => '二维码规则'])]
 class QrcodeJump implements \Stringable
 {
-    #[ORM\Id]
-    #[ORM\GeneratedValue(strategy: 'CUSTOM')]
-    #[ORM\CustomIdGenerator(SnowflakeIdGenerator::class)]
-    #[ORM\Column(type: Types::BIGINT, nullable: false, options: ['comment' => 'ID'])]
-    private ?string $id = null;
+    use SnowflakeKeyAware;
 
     #[ORM\Column(type: Types::STRING, length: 200, unique: true, options: ['comment' => '二维码规则，填服务号的带参二维码url ，必须是http://weixin.qq.com/q/开头的url'])]
     private string $prefix;
@@ -34,11 +30,6 @@ class QrcodeJump implements \Stringable
     private int $state = 0;
 
     use TimestampableAware;
-
-    public function getId(): ?string
-    {
-        return $this->id;
-    }
 
     public function getPrefix(): string
     {

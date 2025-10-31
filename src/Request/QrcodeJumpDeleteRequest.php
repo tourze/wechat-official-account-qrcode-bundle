@@ -5,7 +5,7 @@ namespace WechatOfficialAccountQrcodeBundle\Request;
 use WechatOfficialAccountBundle\Request\WithAccountRequest;
 
 /**
- * 删除已设置的二维码规则
+ * 删除已设置的二维码规则.
  *
  * @see https://developers.weixin.qq.com/doc/offiaccount/qrcode/qrcodejumpdelete.html
  */
@@ -20,7 +20,10 @@ class QrcodeJumpDeleteRequest extends WithAccountRequest
         return 'https://api.weixin.qq.com/cgi-bin/wxopen/qrcodejumpdelete';
     }
 
-    public function getRequestOptions(): ?array
+    /**
+     * @return array<string, mixed>
+     */
+    public function getRequestOptions(): array
     {
         $json = [
             'prefix' => $this->getPrefix(),

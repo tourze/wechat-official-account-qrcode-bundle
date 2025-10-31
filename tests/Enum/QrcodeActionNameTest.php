@@ -2,10 +2,15 @@
 
 namespace WechatOfficialAccountQrcodeBundle\Tests\Enum;
 
-use PHPUnit\Framework\TestCase;
+use PHPUnit\Framework\Attributes\CoversClass;
+use Tourze\PHPUnitEnum\AbstractEnumTestCase;
 use WechatOfficialAccountQrcodeBundle\Enum\QrcodeActionName;
 
-class QrcodeActionNameTest extends TestCase
+/**
+ * @internal
+ */
+#[CoversClass(QrcodeActionName::class)]
+final class QrcodeActionNameTest extends AbstractEnumTestCase
 {
     public function testEnumValues(): void
     {
@@ -30,16 +35,16 @@ class QrcodeActionNameTest extends TestCase
             $options[$case->value] = $case->getLabel();
         }
         $this->assertCount(4, $options);
-        
+
         $this->assertArrayHasKey('QR_SCENE', $options);
         $this->assertEquals('临时的整型参数值', $options['QR_SCENE']);
-        
+
         $this->assertArrayHasKey('QR_STR_SCENE', $options);
         $this->assertEquals('临时的字符串参数值', $options['QR_STR_SCENE']);
-        
+
         $this->assertArrayHasKey('QR_LIMIT_SCENE', $options);
         $this->assertEquals('永久的整型参数值', $options['QR_LIMIT_SCENE']);
-        
+
         $this->assertArrayHasKey('QR_LIMIT_STR_SCENE', $options);
         $this->assertEquals('永久的字符串参数值', $options['QR_LIMIT_STR_SCENE']);
     }
@@ -48,10 +53,29 @@ class QrcodeActionNameTest extends TestCase
     {
         $items = QrcodeActionName::cases();
         $this->assertCount(4, $items);
-        
+
         $this->assertContains(QrcodeActionName::QR_SCENE, $items);
         $this->assertContains(QrcodeActionName::QR_STR_SCENE, $items);
         $this->assertContains(QrcodeActionName::QR_LIMIT_SCENE, $items);
         $this->assertContains(QrcodeActionName::QR_LIMIT_STR_SCENE, $items);
     }
-} 
+
+    public function testToArray(): void
+    {
+        $enum = QrcodeActionName::QR_SCENE;
+        $array = $enum->toArray();
+        $this->assertIsArray($array);
+        $this->assertCount(2, $array);
+
+        $this->assertArrayHasKey('value', $array);
+        $this->assertArrayHasKey('label', $array);
+
+        $this->assertEquals('QR_SCENE', $array['value']);
+        $this->assertEquals('临时的整型参数值', $array['label']);
+
+        // 测试其他枚举值
+        $strSceneArray = QrcodeActionName::QR_STR_SCENE->toArray();
+        $this->assertEquals('QR_STR_SCENE', $strSceneArray['value']);
+        $this->assertEquals('临时的字符串参数值', $strSceneArray['label']);
+    }
+}

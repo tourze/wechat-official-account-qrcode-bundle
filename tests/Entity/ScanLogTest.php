@@ -2,17 +2,39 @@
 
 namespace WechatOfficialAccountQrcodeBundle\Tests\Entity;
 
-use PHPUnit\Framework\TestCase;
+use PHPUnit\Framework\Attributes\CoversClass;
+use Tourze\PHPUnitDoctrineEntity\AbstractEntityTestCase;
 use Tourze\WechatOfficialAccountContracts\UserInterface;
 use WechatOfficialAccountQrcodeBundle\Entity\QrcodeTicket;
 use WechatOfficialAccountQrcodeBundle\Entity\ScanLog;
 
-class ScanLogTest extends TestCase
+/**
+ * @internal
+ */
+#[CoversClass(ScanLog::class)]
+final class ScanLogTest extends AbstractEntityTestCase
 {
+    protected function createEntity(): object
+    {
+        return new ScanLog();
+    }
+
+    /**
+     * @return iterable<string, array{string, mixed}>
+     */
+    public static function propertiesProvider(): iterable
+    {
+        return [
+            'openId' => ['openId', 'test_open_id'],
+        ];
+    }
+
     private ScanLog $scanLog;
 
     protected function setUp(): void
     {
+        parent::setUp();
+
         $this->scanLog = new ScanLog();
     }
 
@@ -83,13 +105,13 @@ class ScanLogTest extends TestCase
         $user = $this->createMock(UserInterface::class);
         $date = new \DateTimeImmutable();
 
-        $result = $this->scanLog
-            ->setQrcode($qrcodeTicket)
-            ->setOpenId($openId)
-            ->setUser($user)
-            ->setCreateTime($date);
+        // Since all setters return void, we need to call them separately
+        $this->scanLog->setQrcode($qrcodeTicket);
+        $this->scanLog->setOpenId($openId);
+        $this->scanLog->setUser($user);
+        $this->scanLog->setCreateTime($date);
 
-        $this->assertSame($this->scanLog, $result);
+        // Verify all properties are set correctly
         $this->assertSame($qrcodeTicket, $this->scanLog->getQrcode());
         $this->assertEquals($openId, $this->scanLog->getOpenId());
         $this->assertSame($user, $this->scanLog->getUser());

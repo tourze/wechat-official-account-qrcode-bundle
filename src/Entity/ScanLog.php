@@ -4,6 +4,7 @@ namespace WechatOfficialAccountQrcodeBundle\Entity;
 
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 use Tourze\DoctrineTimestampBundle\Traits\CreateTimeAware;
 use Tourze\WechatOfficialAccountContracts\UserInterface;
 use WechatOfficialAccountQrcodeBundle\Repository\ScanLogRepository;
@@ -13,23 +14,25 @@ use WechatOfficialAccountQrcodeBundle\Repository\ScanLogRepository;
 class ScanLog implements \Stringable
 {
     use CreateTimeAware;
-    
+
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column(type: Types::INTEGER, options: ['comment' => 'ID'])]
-    private ?int $id = 0;
+    private int $id = 0;
 
     #[ORM\ManyToOne(inversedBy: 'scanLogs')]
     #[ORM\JoinColumn(nullable: false)]
     private ?QrcodeTicket $qrcode = null;
 
     #[ORM\Column(length: 64, options: ['comment' => '扫描OpenID'])]
+    #[Assert\NotBlank]
+    #[Assert\Length(max: 64)]
     private ?string $openId = null;
 
     #[ORM\ManyToOne]
     private ?UserInterface $user = null;
 
-    public function getId(): ?int
+    public function getId(): int
     {
         return $this->id;
     }
@@ -39,11 +42,9 @@ class ScanLog implements \Stringable
         return $this->qrcode;
     }
 
-    public function setQrcode(?QrcodeTicket $qrcode): static
+    public function setQrcode(?QrcodeTicket $qrcode): void
     {
         $this->qrcode = $qrcode;
-
-        return $this;
     }
 
     public function getOpenId(): ?string
@@ -51,11 +52,9 @@ class ScanLog implements \Stringable
         return $this->openId;
     }
 
-    public function setOpenId(string $openId): static
+    public function setOpenId(string $openId): void
     {
         $this->openId = $openId;
-
-        return $this;
     }
 
     public function getUser(): ?UserInterface
@@ -63,11 +62,9 @@ class ScanLog implements \Stringable
         return $this->user;
     }
 
-    public function setUser(?UserInterface $user): static
+    public function setUser(?UserInterface $user): void
     {
         $this->user = $user;
-
-        return $this;
     }
 
     public function __toString(): string

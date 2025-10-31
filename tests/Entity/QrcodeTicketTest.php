@@ -3,18 +3,40 @@
 namespace WechatOfficialAccountQrcodeBundle\Tests\Entity;
 
 use Doctrine\Common\Collections\Collection;
-use PHPUnit\Framework\TestCase;
+use PHPUnit\Framework\Attributes\CoversClass;
+use Tourze\PHPUnitDoctrineEntity\AbstractEntityTestCase;
 use WechatOfficialAccountBundle\Entity\Account;
 use WechatOfficialAccountQrcodeBundle\Entity\QrcodeTicket;
 use WechatOfficialAccountQrcodeBundle\Entity\ScanLog;
 use WechatOfficialAccountQrcodeBundle\Enum\QrcodeActionName;
 
-class QrcodeTicketTest extends TestCase
+/**
+ * @internal
+ */
+#[CoversClass(QrcodeTicket::class)]
+final class QrcodeTicketTest extends AbstractEntityTestCase
 {
+    protected function createEntity(): object
+    {
+        return new QrcodeTicket();
+    }
+
+    /**
+     * @return iterable<string, array{string, mixed}>
+     */
+    public static function propertiesProvider(): iterable
+    {
+        return [
+            'valid' => ['valid', true],
+        ];
+    }
+
     private QrcodeTicket $qrcodeTicket;
 
     protected function setUp(): void
     {
+        parent::setUp();
+
         $this->qrcodeTicket = new QrcodeTicket();
     }
 
@@ -41,10 +63,10 @@ class QrcodeTicketTest extends TestCase
     public function testValid(): void
     {
         $this->assertFalse($this->qrcodeTicket->isValid()); // 默认值为false
-        
+
         $this->qrcodeTicket->setValid(true);
         $this->assertTrue($this->qrcodeTicket->isValid());
-        
+
         $this->qrcodeTicket->setValid(false);
         $this->assertFalse($this->qrcodeTicket->isValid());
     }
@@ -54,7 +76,7 @@ class QrcodeTicketTest extends TestCase
         $account = new Account();
         $this->qrcodeTicket->setAccount($account);
         $this->assertSame($account, $this->qrcodeTicket->getAccount());
-        
+
         $this->qrcodeTicket->setAccount(null);
         $this->assertNull($this->qrcodeTicket->getAccount());
     }
@@ -71,7 +93,7 @@ class QrcodeTicketTest extends TestCase
         $actionName = QrcodeActionName::QR_SCENE;
         $this->qrcodeTicket->setActionName($actionName);
         $this->assertSame($actionName, $this->qrcodeTicket->getActionName());
-        
+
         $actionName = QrcodeActionName::QR_LIMIT_STR_SCENE;
         $this->qrcodeTicket->setActionName($actionName);
         $this->assertSame($actionName, $this->qrcodeTicket->getActionName());
@@ -82,7 +104,7 @@ class QrcodeTicketTest extends TestCase
         $sceneId = 12345;
         $this->qrcodeTicket->setSceneId($sceneId);
         $this->assertEquals($sceneId, $this->qrcodeTicket->getSceneId());
-        
+
         $this->qrcodeTicket->setSceneId(null);
         $this->assertNull($this->qrcodeTicket->getSceneId());
     }
@@ -92,7 +114,7 @@ class QrcodeTicketTest extends TestCase
         $sceneStr = 'test_scene';
         $this->qrcodeTicket->setSceneStr($sceneStr);
         $this->assertEquals($sceneStr, $this->qrcodeTicket->getSceneStr());
-        
+
         $this->qrcodeTicket->setSceneStr(null);
         $this->assertNull($this->qrcodeTicket->getSceneStr());
     }
@@ -102,7 +124,7 @@ class QrcodeTicketTest extends TestCase
         $ticket = 'gQH47joAAAAAAAAAASxodHRwOi8vd2VpeGluLnFxLmNvbS9xL2taZ2Z3TVRtNzJXV1Brb3ZhYmJJAAIEZ23sUwMEmm3sUw==';
         $this->qrcodeTicket->setTicket($ticket);
         $this->assertEquals($ticket, $this->qrcodeTicket->getTicket());
-        
+
         $this->qrcodeTicket->setTicket(null);
         $this->assertNull($this->qrcodeTicket->getTicket());
     }
@@ -112,7 +134,7 @@ class QrcodeTicketTest extends TestCase
         $url = 'http://weixin.qq.com/q/kZgfwMTm72WWPkovabbI';
         $this->qrcodeTicket->setUrl($url);
         $this->assertEquals($url, $this->qrcodeTicket->getUrl());
-        
+
         $this->qrcodeTicket->setUrl(null);
         $this->assertNull($this->qrcodeTicket->getUrl());
     }
@@ -122,31 +144,31 @@ class QrcodeTicketTest extends TestCase
         // 测试初始集合是否为空
         $this->assertInstanceOf(Collection::class, $this->qrcodeTicket->getScanLogs());
         $this->assertTrue($this->qrcodeTicket->getScanLogs()->isEmpty());
-        
+
         // 测试添加ScanLog
         $scanLog = new ScanLog();
         $this->qrcodeTicket->addScanLog($scanLog);
         $this->assertCount(1, $this->qrcodeTicket->getScanLogs());
         $this->assertTrue($this->qrcodeTicket->getScanLogs()->contains($scanLog));
-        
+
         // 测试重复添加相同的ScanLog不会导致重复
         $this->qrcodeTicket->addScanLog($scanLog);
         $this->assertCount(1, $this->qrcodeTicket->getScanLogs());
-        
+
         // 测试添加多个ScanLog
         $scanLog2 = new ScanLog();
         $this->qrcodeTicket->addScanLog($scanLog2);
         $this->assertCount(2, $this->qrcodeTicket->getScanLogs());
-        
+
         // 测试移除ScanLog
         $this->qrcodeTicket->removeScanLog($scanLog);
         $this->assertCount(1, $this->qrcodeTicket->getScanLogs());
         $this->assertFalse($this->qrcodeTicket->getScanLogs()->contains($scanLog));
         $this->assertTrue($this->qrcodeTicket->getScanLogs()->contains($scanLog2));
-        
+
         // 测试移除不存在的ScanLog
         $scanLog3 = new ScanLog();
         $this->qrcodeTicket->removeScanLog($scanLog3);
         $this->assertCount(1, $this->qrcodeTicket->getScanLogs());
     }
-} 
+}

@@ -1,16 +1,23 @@
 <?php
 
-namespace WechatOfficialAccountQrcodeBundle\Tests\Unit\Request;
+namespace WechatOfficialAccountQrcodeBundle\Tests\Request;
 
-use PHPUnit\Framework\TestCase;
+use HttpClientBundle\Tests\Request\RequestTestCase;
+use PHPUnit\Framework\Attributes\CoversClass;
 use WechatOfficialAccountQrcodeBundle\Request\QrcodeJumpDeleteRequest;
 
-class QrcodeJumpDeleteRequestTest extends TestCase
+/**
+ * @internal
+ */
+#[CoversClass(QrcodeJumpDeleteRequest::class)]
+final class QrcodeJumpDeleteRequestTest extends RequestTestCase
 {
     private QrcodeJumpDeleteRequest $request;
 
     protected function setUp(): void
     {
+        parent::setUp();
+
         $this->request = new QrcodeJumpDeleteRequest();
     }
 
@@ -45,8 +52,9 @@ class QrcodeJumpDeleteRequestTest extends TestCase
 
         $this->assertIsArray($options);
         $this->assertArrayHasKey('json', $options);
-        
+
         $json = $options['json'];
+        $this->assertIsArray($json);
         $this->assertSame('http://weixin.qq.com/q/delete_test', $json['prefix']);
         $this->assertSame('delete_test_appid', $json['appid']);
     }

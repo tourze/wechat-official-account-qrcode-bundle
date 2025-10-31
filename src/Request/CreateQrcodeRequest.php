@@ -25,13 +25,16 @@ class CreateQrcodeRequest extends WithAccountRequest
         return 'https://api.weixin.qq.com/cgi-bin/qrcode/create';
     }
 
-    public function getRequestOptions(): ?array
+    /**
+     * @return array<string, mixed>
+     */
+    public function getRequestOptions(): array
     {
         $scene = [];
-        if (in_array($this->getActionName(), [QrcodeActionName::QR_STR_SCENE, QrcodeActionName::QR_LIMIT_STR_SCENE])) {
+        if (in_array($this->getActionName(), [QrcodeActionName::QR_STR_SCENE, QrcodeActionName::QR_LIMIT_STR_SCENE], true)) {
             $scene['scene_str'] = $this->getSceneStr();
         }
-        if (in_array($this->getActionName(), [QrcodeActionName::QR_SCENE, QrcodeActionName::QR_LIMIT_SCENE])) {
+        if (in_array($this->getActionName(), [QrcodeActionName::QR_SCENE, QrcodeActionName::QR_LIMIT_SCENE], true)) {
             $scene['scene_id'] = $this->getSceneId();
         }
 

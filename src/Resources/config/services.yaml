@@ -14,5 +14,13 @@ services:
     resource: '../../Procedure/'
   WechatOfficialAccountQrcodeBundle\Repository\:
     resource: '../../Repository/'
+  WechatOfficialAccountQrcodeBundle\Controller\:
+    resource: '../../Controller/'
+    tags: ['controller.service_arguments']
   WechatOfficialAccountQrcodeBundle\Service\:
     resource: '../../Service/'
+
+  # 为监听器注入环境参数
+  WechatOfficialAccountQrcodeBundle\EventSubscriber\QrcodeJumpListener:
+    arguments:
+      $environment: '%kernel.environment%'

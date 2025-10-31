@@ -2,17 +2,24 @@
 
 namespace WechatOfficialAccountQrcodeBundle\Tests\Request;
 
-use PHPUnit\Framework\TestCase;
+use HttpClientBundle\Tests\Request\RequestTestCase;
+use PHPUnit\Framework\Attributes\CoversClass;
 use WechatOfficialAccountBundle\Entity\Account;
 use WechatOfficialAccountQrcodeBundle\Enum\QrcodeActionName;
 use WechatOfficialAccountQrcodeBundle\Request\CreateQrcodeRequest;
 
-class CreateQrcodeRequestTest extends TestCase
+/**
+ * @internal
+ */
+#[CoversClass(CreateQrcodeRequest::class)]
+final class CreateQrcodeRequestTest extends RequestTestCase
 {
     private CreateQrcodeRequest $request;
 
     protected function setUp(): void
     {
+        parent::setUp();
+
         $this->request = new CreateQrcodeRequest();
     }
 
@@ -61,13 +68,16 @@ class CreateQrcodeRequestTest extends TestCase
     {
         $this->request->setActionName(QrcodeActionName::QR_STR_SCENE);
         $this->request->setSceneStr('test_scene');
-        
+
         $options = $this->request->getRequestOptions();
         $this->assertArrayHasKey('json', $options);
+        $this->assertIsArray($options['json']);
         $this->assertArrayHasKey('expire_seconds', $options['json']);
         $this->assertArrayHasKey('action_name', $options['json']);
         $this->assertArrayHasKey('action_info', $options['json']);
+        $this->assertIsArray($options['json']['action_info']);
         $this->assertArrayHasKey('scene', $options['json']['action_info']);
+        $this->assertIsArray($options['json']['action_info']['scene']);
         $this->assertArrayHasKey('scene_str', $options['json']['action_info']['scene']);
         $this->assertEquals('test_scene', $options['json']['action_info']['scene']['scene_str']);
         $this->assertSame(QrcodeActionName::QR_STR_SCENE, $options['json']['action_name']);
@@ -77,11 +87,14 @@ class CreateQrcodeRequestTest extends TestCase
     {
         $this->request->setActionName(QrcodeActionName::QR_SCENE);
         $this->request->setSceneId(12345);
-        
+
         $options = $this->request->getRequestOptions();
         $this->assertArrayHasKey('json', $options);
+        $this->assertIsArray($options['json']);
         $this->assertArrayHasKey('action_info', $options['json']);
+        $this->assertIsArray($options['json']['action_info']);
         $this->assertArrayHasKey('scene', $options['json']['action_info']);
+        $this->assertIsArray($options['json']['action_info']['scene']);
         $this->assertArrayHasKey('scene_id', $options['json']['action_info']['scene']);
         $this->assertEquals(12345, $options['json']['action_info']['scene']['scene_id']);
         $this->assertSame(QrcodeActionName::QR_SCENE, $options['json']['action_name']);
@@ -91,11 +104,14 @@ class CreateQrcodeRequestTest extends TestCase
     {
         $this->request->setActionName(QrcodeActionName::QR_LIMIT_STR_SCENE);
         $this->request->setSceneStr('permanent_scene');
-        
+
         $options = $this->request->getRequestOptions();
         $this->assertArrayHasKey('json', $options);
+        $this->assertIsArray($options['json']);
         $this->assertArrayHasKey('action_info', $options['json']);
+        $this->assertIsArray($options['json']['action_info']);
         $this->assertArrayHasKey('scene', $options['json']['action_info']);
+        $this->assertIsArray($options['json']['action_info']['scene']);
         $this->assertArrayHasKey('scene_str', $options['json']['action_info']['scene']);
         $this->assertEquals('permanent_scene', $options['json']['action_info']['scene']['scene_str']);
         $this->assertSame(QrcodeActionName::QR_LIMIT_STR_SCENE, $options['json']['action_name']);
@@ -105,11 +121,14 @@ class CreateQrcodeRequestTest extends TestCase
     {
         $this->request->setActionName(QrcodeActionName::QR_LIMIT_SCENE);
         $this->request->setSceneId(1024);
-        
+
         $options = $this->request->getRequestOptions();
         $this->assertArrayHasKey('json', $options);
+        $this->assertIsArray($options['json']);
         $this->assertArrayHasKey('action_info', $options['json']);
+        $this->assertIsArray($options['json']['action_info']);
         $this->assertArrayHasKey('scene', $options['json']['action_info']);
+        $this->assertIsArray($options['json']['action_info']['scene']);
         $this->assertArrayHasKey('scene_id', $options['json']['action_info']['scene']);
         $this->assertEquals(1024, $options['json']['action_info']['scene']['scene_id']);
         $this->assertSame(QrcodeActionName::QR_LIMIT_SCENE, $options['json']['action_name']);
@@ -119,7 +138,7 @@ class CreateQrcodeRequestTest extends TestCase
     {
         $account = new Account();
         $this->request->setAccount($account);
-        
+
         $this->assertSame($account, $this->request->getAccount());
     }
-} 
+}

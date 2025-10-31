@@ -5,7 +5,7 @@ namespace WechatOfficialAccountQrcodeBundle\Request;
 use WechatOfficialAccountBundle\Request\WithAccountRequest;
 
 /**
- * 增加或修改二维码规则
+ * 增加或修改二维码规则.
  *
  * @see https://developers.weixin.qq.com/doc/offiaccount/qrcode/qrcodejumpadd.html
  */
@@ -24,7 +24,10 @@ class QrcodeJumpAddRequest extends WithAccountRequest
         return 'https://api.weixin.qq.com/cgi-bin/wxopen/qrcodejumpadd';
     }
 
-    public function getRequestOptions(): ?array
+    /**
+     * @return array<string, mixed>
+     */
+    public function getRequestOptions(): array
     {
         $json = [
             'prefix' => $this->getPrefix(),

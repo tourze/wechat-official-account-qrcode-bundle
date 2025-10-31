@@ -1,16 +1,23 @@
 <?php
 
-namespace WechatOfficialAccountQrcodeBundle\Tests\Unit\Request;
+namespace WechatOfficialAccountQrcodeBundle\Tests\Request;
 
-use PHPUnit\Framework\TestCase;
+use HttpClientBundle\Tests\Request\RequestTestCase;
+use PHPUnit\Framework\Attributes\CoversClass;
 use WechatOfficialAccountQrcodeBundle\Request\QrcodeJumpPublishRequest;
 
-class QrcodeJumpPublishRequestTest extends TestCase
+/**
+ * @internal
+ */
+#[CoversClass(QrcodeJumpPublishRequest::class)]
+final class QrcodeJumpPublishRequestTest extends RequestTestCase
 {
     private QrcodeJumpPublishRequest $request;
 
     protected function setUp(): void
     {
+        parent::setUp();
+
         $this->request = new QrcodeJumpPublishRequest();
     }
 
@@ -37,8 +44,9 @@ class QrcodeJumpPublishRequestTest extends TestCase
 
         $this->assertIsArray($options);
         $this->assertArrayHasKey('json', $options);
-        
+
         $json = $options['json'];
+        $this->assertIsArray($json);
         $this->assertSame('http://weixin.qq.com/q/publish_test', $json['prefix']);
     }
 

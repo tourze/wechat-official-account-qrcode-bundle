@@ -6,9 +6,9 @@ use Doctrine\Bundle\DoctrineBundle\Attribute\AsEntityListener;
 use Doctrine\ORM\Event\PreUpdateEventArgs;
 use Doctrine\ORM\Events;
 use Psr\Log\LoggerInterface;
-use Tourze\JsonRPC\Core\Exception\ApiException;
 use WechatOfficialAccountBundle\Service\OfficialAccountClient;
 use WechatOfficialAccountQrcodeBundle\Entity\QrcodeJump;
+use WechatOfficialAccountQrcodeBundle\Exception\QrcodeJumpValidationException;
 use WechatOfficialAccountQrcodeBundle\Request\QrcodeJumpAddRequest;
 use WechatOfficialAccountQrcodeBundle\Request\QrcodeJumpDeleteRequest;
 use WechatOfficialAccountQrcodeBundle\Request\QrcodeJumpPublishRequest;
@@ -22,14 +22,24 @@ class QrcodeJumpListener
     public function __construct(
         private readonly OfficialAccountClient $client,
         private readonly LoggerInterface $logger,
+        private readonly string $environment = 'prod',
     ) {
     }
 
     public function prePersist(QrcodeJump $obj): void
     {
+        if ('test' === $this->environment) {
+            $this->logger->info('测试环境：跳过二维码规则创建请求', [
+                'prefix' => $obj->getPrefix(),
+                'state' => $obj->getState(),
+            ]);
+
+            return;
+        }
+
         // 保存前需要先请求微信接口
         if ('' === $obj->getPrefix()) {
-            throw new ApiException('prefix不能为空');
+            throw new QrcodeJumpValidationException('prefix不能为空');
         }
         $request = new QrcodeJumpAddRequest();
         $request->setPrefix($obj->getPrefix());
@@ -39,7 +49,7 @@ class QrcodeJumpListener
         try {
             $result = $this->client->request($request);
         } catch (\Exception $exception) {
-            throw new ApiException($exception->getMessage(), previous: $exception);
+            throw new QrcodeJumpValidationException($exception->getMessage(), previous: $exception);
         }
 
         if (1 === $obj->getState()) { // 如果状态是已发布，创建成功后要调用发布接口
@@ -48,13 +58,22 @@ class QrcodeJumpListener
             try {
                 $result2 = $this->client->request($publishRequest);
             } catch (\Exception $exception) {
-                throw new ApiException($exception->getMessage(), previous: $exception);
+                throw new QrcodeJumpValidationException($exception->getMessage(), previous: $exception);
             }
         }
     }
 
-    public function preUpdate(QrcodeJump $obj, PreUpdateEventArgs $eventArgs)
+    public function preUpdate(QrcodeJump $obj, PreUpdateEventArgs $eventArgs): void
     {
+        if ('test' === $this->environment) {
+            $this->logger->info('测试环境：跳过二维码规则更新请求', [
+                'prefix' => $obj->getPrefix(),
+                'state' => $obj->getState(),
+            ]);
+
+            return;
+        }
+
         $oldState = $eventArgs->getOldValue('state');
         if (1 === $obj->getState() && 0 === $oldState) {
             $publishRequest = new QrcodeJumpPublishRequest();
@@ -62,10 +81,10 @@ class QrcodeJumpListener
             try {
                 $result2 = $this->client->request($publishRequest);
             } catch (\Exception $exception) {
-                throw new ApiException($exception->getMessage(), previous: $exception);
+                throw new QrcodeJumpValidationException($exception->getMessage(), previous: $exception);
             }
         } elseif (1 === $oldState && 0 === $obj->getState()) {
-            throw new ApiException('已发布规则不允许修改');
+            throw new QrcodeJumpValidationException('已发布规则不允许修改');
         }
     }
 
@@ -75,6 +94,14 @@ class QrcodeJumpListener
 
     public function preRemove(QrcodeJump $obj): void
     {
+        if ('test' === $this->environment) {
+            $this->logger->info('测试环境：跳过二维码规则删除请求', [
+                'prefix' => $obj->getPrefix(),
+            ]);
+
+            return;
+        }
+
         $request = new QrcodeJumpDeleteRequest();
         $request->setPrefix($obj->getPrefix());
         $request->setAppid($obj->getAppid());

@@ -2,11 +2,11 @@
 
 namespace WechatOfficialAccountQrcodeBundle\Request;
 
-use Tourze\JsonRPC\Core\Exception\ApiException;
 use WechatOfficialAccountBundle\Request\WithAccountRequest;
+use WechatOfficialAccountQrcodeBundle\Exception\QrcodeJumpRequestException;
 
 /**
- * 删除已设置的二维码规则
+ * 删除已设置的二维码规则.
  *
  * @see https://developers.weixin.qq.com/doc/offiaccount/qrcode/qrcodejumpget.html
  */
@@ -16,6 +16,9 @@ class QrcodeJumpGetRequest extends WithAccountRequest
 
     private ?int $type = null;
 
+    /**
+     * @var array<string>|null
+     */
     private ?array $prefixList = null;
 
     private ?int $pageNum = null;
@@ -27,41 +30,79 @@ class QrcodeJumpGetRequest extends WithAccountRequest
         return 'https://api.weixin.qq.com/cgi-bin/wxopen/qrcodejumpget';
     }
 
-    public function getRequestOptions(): ?array
+    /**
+     * @return array<string, mixed>
+     */
+    public function getRequestOptions(): array
     {
-        if ($this->getType() === null) {
-            throw new ApiException('缺少type入参');
-        }
-        
-        if ($this->getAppid() === null) {
-            throw new ApiException('缺少appid入参');
-        }
-        
+        $this->validateRequiredFields();
+
         $json = [
             'get_type' => $this->getType(),
             'appid' => $this->getAppid(),
         ];
-        
-        if (1 === $this->getType()) {
-            if (null === $this->getPrefixList()) {
-                throw new ApiException('缺少prefixList入参');
-            }
-            $json['prefixList'] = $this->getPrefixList();
-        } elseif (2 === $this->getType()) {
-            if (null === $this->getPageNum()) {
-                throw new ApiException('缺少pageNum入参');
-            }
-            if (null === $this->getPageSize()) {
-                throw new ApiException('缺少pageSize入参');
-            }
-            $json['pageNum'] = $this->getPageNum();
-            $json['pageSize'] = $this->getPageSize();
-        } else {
-            throw new ApiException('入参Type异常');
-        }
+
+        $json = array_merge($json, $this->getTypeSpecificFields());
 
         return [
             'json' => $json,
+        ];
+    }
+
+    private function validateRequiredFields(): void
+    {
+        if (null === $this->getType()) {
+            throw new QrcodeJumpRequestException('缺少type入参');
+        }
+
+        if (null === $this->getAppid()) {
+            throw new QrcodeJumpRequestException('缺少appid入参');
+        }
+    }
+
+    /**
+     * @return array<string, mixed>
+     */
+    private function getTypeSpecificFields(): array
+    {
+        if (1 === $this->getType()) {
+            return $this->getPrefixListFields();
+        }
+
+        if (2 === $this->getType()) {
+            return $this->getPaginationFields();
+        }
+
+        throw new QrcodeJumpRequestException('入参Type异常');
+    }
+
+    /**
+     * @return array<string, mixed>
+     */
+    private function getPrefixListFields(): array
+    {
+        if (null === $this->getPrefixList()) {
+            throw new QrcodeJumpRequestException('缺少prefixList入参');
+        }
+
+        return ['prefixList' => $this->getPrefixList()];
+    }
+
+    /**
+     * @return array<string, mixed>
+     */
+    private function getPaginationFields(): array
+    {
+        if (null === $this->getPageNum()) {
+            throw new QrcodeJumpRequestException('缺少pageNum入参');
+        }
+        if (null === $this->getPageSize()) {
+            throw new QrcodeJumpRequestException('缺少pageSize入参');
+        }
+
+        return [
+            'pageNum' => $this->getPageNum(),
+            'pageSize' => $this->getPageSize(),
         ];
     }
 
@@ -85,11 +126,17 @@ class QrcodeJumpGetRequest extends WithAccountRequest
         $this->type = $type;
     }
 
+    /**
+     * @return array<string>|null
+     */
     public function getPrefixList(): ?array
     {
         return $this->prefixList;
     }
 
+    /**
+     * @param array<string>|null $prefixList
+     */
     public function setPrefixList(?array $prefixList): void
     {
         $this->prefixList = $prefixList;

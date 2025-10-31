@@ -21,21 +21,29 @@ class TicketMessageSubscriber
     public function saveScanLog(WechatOfficialAccountServerMessageRequestEvent $event): void
     {
         $message = $event->getMessage()->getContext();
+        if (!is_array($message)) {
+            return;
+        }
 
-        $ticket = ArrayHelper::getValue($message, 'Ticket');
-        if (empty($ticket)) {
+        $ticketValue = ArrayHelper::getValue($message, 'Ticket');
+        if (null === $ticketValue || '' === $ticketValue || !is_string($ticketValue)) {
             return;
         }
         $ticket = $this->ticketRepository->findOneBy([
-            'ticket' => $ticket,
+            'ticket' => $ticketValue,
         ]);
         if (null === $ticket) {
             return;
         }
 
+        $user = $event->getUser();
+        if (null === $user) {
+            return;
+        }
+
         $log = new ScanLog();
         $log->setQrcode($ticket);
-        $log->setOpenId($event->getUser()->getOpenId());
+        $log->setOpenId($user->getOpenId());
         $log->setUser($event->getUser());
         $this->doctrineService->asyncInsert($log);
     }

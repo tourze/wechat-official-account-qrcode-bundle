@@ -2,7 +2,7 @@
 
 namespace WechatOfficialAccountQrcodeBundle\Tests\Request;
 
-use HttpClientBundle\Tests\Request\RequestTestCase;
+use HttpClientBundle\Test\RequestTestCase;
 use PHPUnit\Framework\Attributes\CoversClass;
 use WechatOfficialAccountQrcodeBundle\Exception\QrcodeJumpRequestException;
 use WechatOfficialAccountQrcodeBundle\Request\QrcodeJumpGetRequest;
